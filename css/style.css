@@ -1,0 +1,28 @@
+.grid {
+    width:700px;
+    height:700px;
+    border:1px solid grey;
+    position:absolute;
+    top:100px;
+    left:100px;
+}
+
+
+.space {
+    display:inline-block;
+    border:1px solid grey;
+    width:200px;
+    height:200px;
+    background-color: blue;
+    font-size:100px;
+    font-family:helvetica;
+    text-align:center;
+    color:white;
+}
+
+.move {
+    display:inline-block;
+    vertical-align:middle;
+    line-height:normal;
+    border:1px solid red;
+}
