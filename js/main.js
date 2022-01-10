@@ -7,8 +7,8 @@ let turn = 1;
 
 let gameBoard = [
     [1,0,1],
-    [-1,-1,-1],
-    [1,0,1]
+    [-1,1,0],
+    [1,0,-1]
 ]
 
 //manages turn with integer - player one is odd and player two even numbers
@@ -45,9 +45,11 @@ const checkSpaceIsEmpty = function(space){
     }
 }
 
-//checks for winner by ...
+//checks for winner by using score variable, array is updated with 1 for player 1 and -1 for player 2
+//player wins when row, column, or diagonal sum === 3 or -3
 const checkForWinner = function(){
 
+    //checks if the score is 3 or -3, indicating winner
     const checkScore = function(score){
         if (score === 3){
             console.log('player one wins!');
@@ -57,46 +59,46 @@ const checkForWinner = function(){
     }  
 
 
-    let gameScore = 0;
-    //loop that iterates through rows by iterating through arrays within gameBoard    
+    //loop that iterates through rows by iterating through arrays within gameBoard to check for winner
     for (let i = 0; i < gameBoard.length; i++){
         gameScore = 0;
         for(let j = 0; j < gameBoard[i].length; j++){
             gameScore = gameScore + gameBoard[i][j];
-            console.log(gameScore);
             checkScore(gameScore);
         }
     }
-    
 
 
-    gameScore = 0;
-    //loop that iterates through columns by iterating through arrays within gameBoard    
+    //loop that iterates through columns by iterating through arrays within gameBoard to check for winner
     for (let i = 0; i < gameBoard.length; i++){
         gameScore = 0;
         for(let j = 0; j < gameBoard[i].length; j++){
             gameScore = gameScore + gameBoard[j][i];
-            console.log(gameScore);
             checkScore(gameScore);
         }
     } 
     
+    gameScore = 0;
+    //loop that checks diagonal top left to bottom right for winner
+    for (let i = 0; i < gameBoard.length; i++){
+        gameScore = gameScore + gameBoard[i][i];
+        checkScore(gameScore);
+    }
 
-    
-
-
-
-
+    //loop that checks diagonal top right to bottom left for winner
+    gameScore = 0;
+    for (let i = 0; i < gameBoard.length; i++){
+        let j = gameBoard.length - i - 1;
+        gameScore = gameScore + gameBoard[i][j];
+        checkScore(gameScore);
+    }
 
 
 } //end checkForWinner()
 
-checkForWinner();
 
-
-
-
-// **loops through entire gameboard > draw
+const checkForDraw = function(){
+// **loops through entire gameboard, if no winner found using checkForWinner, and the board is full, it is a draw
 //
 // for(let i = 0; i < gameBoard.length; i++){
 //     gameBoard[i]
@@ -104,6 +106,8 @@ checkForWinner();
 //             console.log(gameBoard[i][j]);
 //         }
 // }
+}
+
 
 const placeMove = function(){
     
