@@ -5,10 +5,13 @@ console.log("Tic Tac Toe JS loaded");
 //turn is a global variable as it needs to be tracked from one play to the next
 let turn = 1;
 
+
+//gameBoard[0][0] = 1
+
 let gameBoard = [
-    [1,0,1],
-    [-1,1,0],
-    [1,0,-1]
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
 ]
 
 //manages turn with integer - player one is odd and player two even numbers
