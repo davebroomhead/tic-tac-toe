@@ -11,6 +11,20 @@ let gameBoard = [
     [0,0,0]
 ]
 
+const createGameBoard = function(size){
+    
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j <size; j++){
+            const $newSpace = $("<div></div>");
+            $newSpace.addClass(`space data-row="${i}" data-column="${j}"`);
+            $('.grid').append($newSpace);
+            console.log("made a div: ",i,j)
+            console.log($newSpace)
+        }
+    }
+}
+
+
 //manages turn with integer - player one is odd and player two even numbers
 //updates page so user can see whose turn it is
 const manageTurn = function(){
