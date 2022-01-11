@@ -33,9 +33,9 @@ const manageTurn = function(){
 
     turn += 1;
     if (turn % 2 === 0){
-        $('.player-turn').html(`Player one's turn`);
+        $('.player-turn').html(`Cross's turn`);
     }else {
-        $('.player-turn').html(`Player two's turn`);
+        $('.player-turn').html(`Nought's turn`);
     }
 }
 

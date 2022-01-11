@@ -1,21 +1,45 @@
+body {
+    text-align:center;
+    background-color:black;
+    color:white;
+}
+
+.canvas {
+    display:grid;
+    background-image: url("../images/background.png");
+    width:800px;
+    height:550px;
+    margin:auto;
+}
+
 .grid {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap:0px;
     width:350px;
     height:350px;
+    margin:auto;
 }
 
 .space {
+    display:grid;
     width:100px;
     height:100px;
-    background-color: blue;
-    font-size:80px;
-    text-align:center;
+    background-image:url("../images/foreground.png");
+}
+
+.space span {
+    background-image:url("../images/background.png");
+    align-self: center;
+    margin: auto
 }
 
 .move {
-    color:white;
     font-family:helvetica;
-    margin:auto;
+    font-size:80px; 
+    color:#322a6c
+}
+
+.size-selector {
+    text-align:center;
 }
