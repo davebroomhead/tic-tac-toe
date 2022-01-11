@@ -3,10 +3,7 @@ console.log("Tic Tac Toe JS loaded");
 //global variables
 
 //turn is a global variable as it needs to be tracked from one play to the next
-let turn = 1;
-
-
-//gameBoard[0][0] = 1
+let turn = 2;
 
 let gameBoard = [
     [0,0,0],
@@ -17,28 +14,33 @@ let gameBoard = [
 //manages turn with integer - player one is odd and player two even numbers
 //updates page so user can see whose turn it is
 const manageTurn = function(){
+
+    //console.log("mangeTurn() ... turn = ",turn);
+
     turn += 1;
     if (turn % 2 === 0){
-        $('.player-turn').html(`Player two's turn`);
-    }else {
         $('.player-turn').html(`Player one's turn`);
+    }else {
+        $('.player-turn').html(`Player two's turn`);
     }
 }
 
 //places X in space passed into function from placeMove()
-const placeX = function(space){
+const placeX = function(space,row,column){
     const $newX = $("<span></span>");
     $newX.addClass("move");
     $newX.html('X');
-    space.html($newX); 
+    space.html($newX);
+    gameBoard[row][column] = 1;
 }
 
 //places O in space passed into function from placeMove()
-const placeO = function(space){
+const placeO = function(space,row,column){
     const $newO = $("<span></span>");
     $newO.addClass("move");
     $newO.html('O');
     space.html($newO);
+    gameBoard[row][column] = -1;
 }
 
 //checks if space player clicks on is empty
@@ -100,22 +102,33 @@ const checkForWinner = function(){
 } //end checkForWinner()
 
 
+
+// checks for a draw by referencing turn counter
 const checkForDraw = function(){
-// **loops through entire gameboard, if no winner found using checkForWinner, and the board is full, it is a draw
-//
-// for(let i = 0; i < gameBoard.length; i++){
-//     gameBoard[i]
-//         for(let j = 0; j < gameBoard[i].length; j++){
-//             console.log(gameBoard[i][j]);
-//         }
-// }
-}
+
+    if (turn === 11){
+        console.log("it's a draw!");
+    }
+
+} // end checkForDraw()
 
 
+
+
+//primary function that invokes above functions, manages gameplay
 const placeMove = function(){
     
+    //expect blank array of zeros (not the case)
+    //console.log("this text is before the board is changed: ",gameBoard);
+
+
     const clickSpace = $(this);
     //saves the jQuery element of the space clicked into variable 'clickSpace'
+
+
+    const clickSpaceRow = clickSpace.attr('data-row');
+    const clickSpaceColumn = clickSpace.attr('data-column');
+    
 
     const spaceEmpty = checkSpaceIsEmpty(clickSpace);
     //checks the space clicked on is empty
@@ -123,15 +136,20 @@ const placeMove = function(){
     //conditional that allows move if space is empty, otherwise tells user the space is taken and prevents move
     if (spaceEmpty === true){
         if(turn % 2 === 0){
-            placeX(clickSpace);
+            placeX(clickSpace,clickSpaceRow,clickSpaceColumn);
         }else {
-            placeO(clickSpace);
+            placeO(clickSpace,clickSpaceRow,clickSpaceColumn);
         }
+        //player turn changes at the end of the move
+        manageTurn()
+
     }else{
         console.log("space taken!")
     }
-    manageTurn()
-    //player turn changes at the end of the move
+
+
+    checkForWinner();
+    checkForDraw();
 
 } // placeMove()
 
