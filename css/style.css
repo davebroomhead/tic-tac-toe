@@ -40,7 +40,7 @@ h1{
 .grid {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
-    gap:2px;
+    gap:10px;
     width:400px;
     height:400px;
     margin:auto;
@@ -60,12 +60,32 @@ h1{
 }
 
 .move {
-    font-size:40px; 
-    color:#5e47ed
+    font-size:50px; 
+    color:#5e47ed;
 }
 
+
 .size-selector {
-    text-align:center;
-    width:100px;
-    margin:25px;
+    text-align:left;
+    width:70px;
+    height:25px;
+    background-color:#5e47ed;
+    color:#a892fa;
+    font-family: "C64_Pro";
+    font-size:16px;
+    border:none;
+    -moz-appearance: textfield;
+}
+
+.reset-button {
+    background-color:#5e47ed;
+    color:#a892fa;
+    font-family: "C64_Pro";
+    font-size:16px;
+    height:30px;
+    border:none;
+}
+
+.size-label {
+    display:inline;
 }

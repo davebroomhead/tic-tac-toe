@@ -12,14 +12,30 @@ let gameBoardArray = [
     [0,0,0]
 ]
 
+let gameBoardTestArray = [''];
+
+const createGameBoardArray = function(size){
+    gameBoardTestArray = [''];
+    for (let i = 0; i < size; i++) {
+        gameBoardTestArray[i] = [''];
+        for (let j = 0; j < size; j++){
+        gameBoardTestArray[i][j] = 0;
+        }
+    }
+}
+
+
 const createGameBoard = function(){
+
+    turn = 2;
+
+    $('.player-turn').html(`Cross's turn`);
+    $('.messages').html("");
 
     //clears grid area by making html empty
     $('.grid').html("");
 
     gameSize = $('.size-selector').val();
-
-    console.log(`making ${gameSize}^2 spaces`);
 
     for (let i = 0; i < gameSize; i++) {
         for (let j = 0; j <gameSize; j++){
@@ -31,6 +47,10 @@ const createGameBoard = function(){
         }
     }
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
+    $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
+    
+    $('.move').css('color','red'); //not working????  need to actually change size
+
     $('.space').on('click',placeMove);
 }
 
@@ -38,8 +58,6 @@ const createGameBoard = function(){
 //manages turn with integer - player one is odd and player two even numbers
 //updates page so user can see whose turn it is
 const manageTurn = function(){
-
-    //console.log("mangeTurn() ... turn = ",turn);
 
     turn += 1;
     if (turn % 2 === 0){
@@ -69,7 +87,7 @@ const placeO = function(space,row,column){
 
 //checks if space player clicks on is empty
 const checkSpaceIsEmpty = function(space){
-    if (space.html() === ''){
+    if (space.is(':empty')){
         return true;
     }
 }
@@ -78,12 +96,19 @@ const checkSpaceIsEmpty = function(space){
 //player wins when row, column, or diagonal sum === 3 or -3
 const checkForWinner = function(){
 
+let gameScore = 0;
+console.log("checkForWinner function, gameScore = ",gameScore);
+
     //checks if the score is 3 or -3, indicating winner
     const checkScore = function(score){
-        if (score === 3){
+        gameSize = parseInt(gameSize);
+        console.log("checkScore() function, score = ",score);
+        if (score === gameSize){
+            console.log("cross win detected, score = ",score);
             $('.messages').html("*Cross wins!*");
             $('.player-turn').html("");
-        }else if(score === -3){
+        }else if(score === -gameSize){
+            console.log("circle win detected, score = ",score);
             $('.messages').html("*Circle wins!*");
             $('.player-turn').html("");
         }
@@ -131,7 +156,7 @@ const checkForWinner = function(){
 // checks for a draw by referencing turn counter
 const checkForDraw = function(){
 
-    if (turn === 11){
+    if (turn === ((gameSize * gameSize) + 2)){
         $('.messages').html("*It's a draw!*");
         $('.player-turn').html("");
     }
@@ -141,27 +166,20 @@ const checkForDraw = function(){
 
 //primary function that invokes above functions, manages gameplay
 const placeMove = function(){
-    
-    //expect blank array of zeros (not the case)
-    //console.log("this text is before the board is changed: ",gameBoard);
 
 
     const clickSpace = $(this);
     //saves the jQuery element of the space clicked into variable 'clickSpace'
 
-
-    const clickSpaceRow = clickSpace.attr('data-row');
-    const clickSpaceColumn = clickSpace.attr('data-column');
-    
-    console.log(clickSpace);
-    console.log("clickSpace.attr('data-row') = ",clickSpace.attr('data-row'));
-    console.log(clickSpaceRow,clickSpaceColumn);
+    const clickSpaceRow = clickSpace.data('row');
+    const clickSpaceColumn = clickSpace.data('column');
 
     const spaceEmpty = checkSpaceIsEmpty(clickSpace);
     //checks the space clicked on is empty
 
     //conditional that allows move if space is empty, otherwise tells user the space is taken and prevents move
     if (spaceEmpty === true){
+
         if(turn % 2 === 0){
             placeX(clickSpace,clickSpaceRow,clickSpaceColumn);
         }else {
@@ -171,7 +189,7 @@ const placeMove = function(){
         //player turn changes at the end of the move
         manageTurn()
 
-    }else{
+    }else {
         $('.messages').html("*space taken!*");
     }
 
@@ -181,10 +199,10 @@ const placeMove = function(){
 
 } // placeMove()
 
-//createGameBoard();
+createGameBoard();
 
 //when the user clicks on a div with the class of space, it runs placeMove()
-$('.space').on('click',placeMove);
+//$('.space').on('click',placeMove);
 
 //creates game board of specified size when user sets size field
 $('.size-selector').on('change',createGameBoard);
