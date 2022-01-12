@@ -4,22 +4,28 @@ console.log("Tic Tac Toe JS loaded");
 
 //turn is a global variable as it needs to be tracked from one play to the next
 let turn = 2;
+let gameSize = 3;
 
-let gameBoard = [
+let gameBoardArray = [
     [0,0,0],
     [0,0,0],
     [0,0,0]
 ]
 
-const createGameBoard = function(size){
-    
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j <size; j++){
+const createGameBoard = function(){
+
+    //clears grid area by making html empty
+    $('.grid').html("");
+
+    gameSize = $('.size-selector').val();
+
+    console.log(`making ${gameSize}^2 spaces`);
+
+    for (let i = 0; i < gameSize; i++) {
+        for (let j = 0; j <gameSize; j++){
             const $newSpace = $("<div></div>");
             $newSpace.addClass(`space data-row="${i}" data-column="${j}"`);
             $('.grid').append($newSpace);
-            console.log("made a div: ",i,j)
-            console.log($newSpace)
         }
     }
 }
@@ -45,7 +51,7 @@ const placeX = function(space,row,column){
     $newX.addClass("move");
     $newX.html('X');
     space.html($newX);
-    gameBoard[row][column] = 1;
+    gameBoardArray[row][column] = 1;
 }
 
 //places O in space passed into function from placeMove()
@@ -54,7 +60,7 @@ const placeO = function(space,row,column){
     $newO.addClass("move");
     $newO.html('O');
     space.html($newO);
-    gameBoard[row][column] = -1;
+    gameBoardArray[row][column] = -1;
 }
 
 //checks if space player clicks on is empty
@@ -71,50 +77,51 @@ const checkForWinner = function(){
     //checks if the score is 3 or -3, indicating winner
     const checkScore = function(score){
         if (score === 3){
-            console.log('player one wins!');
+            $('.messages').html("*Cross wins!*");
+            $('.player-turn').html("");
         }else if(score === -3){
-            console.log('player two wins!');
+            $('.messages').html("*Circle wins!*");
+            $('.player-turn').html("");
         }
     }  
 
 
     //loop that iterates through rows by iterating through arrays within gameBoard to check for winner
-    for (let i = 0; i < gameBoard.length; i++){
+    for (let i = 0; i < gameBoardArray.length; i++){
         gameScore = 0;
-        for(let j = 0; j < gameBoard[i].length; j++){
-            gameScore = gameScore + gameBoard[i][j];
+        for(let j = 0; j < gameBoardArray[i].length; j++){
+            gameScore = gameScore + gameBoardArray[i][j];
             checkScore(gameScore);
         }
     }
 
 
     //loop that iterates through columns by iterating through arrays within gameBoard to check for winner
-    for (let i = 0; i < gameBoard.length; i++){
+    for (let i = 0; i < gameBoardArray.length; i++){
         gameScore = 0;
-        for(let j = 0; j < gameBoard[i].length; j++){
-            gameScore = gameScore + gameBoard[j][i];
+        for(let j = 0; j < gameBoardArray[i].length; j++){
+            gameScore = gameScore + gameBoardArray[j][i];
             checkScore(gameScore);
         }
     } 
     
     gameScore = 0;
     //loop that checks diagonal top left to bottom right for winner
-    for (let i = 0; i < gameBoard.length; i++){
-        gameScore = gameScore + gameBoard[i][i];
+    for (let i = 0; i < gameBoardArray.length; i++){
+        gameScore = gameScore + gameBoardArray[i][i];
         checkScore(gameScore);
     }
 
     //loop that checks diagonal top right to bottom left for winner
     gameScore = 0;
-    for (let i = 0; i < gameBoard.length; i++){
-        let j = gameBoard.length - i - 1;
-        gameScore = gameScore + gameBoard[i][j];
+    for (let i = 0; i < gameBoardArray.length; i++){
+        let j = gameBoardArray.length - i - 1;
+        gameScore = gameScore + gameBoardArray[i][j];
         checkScore(gameScore);
     }
 
 
 } //end checkForWinner()
-
 
 
 // checks for a draw by referencing turn counter
@@ -125,8 +132,6 @@ const checkForDraw = function(){
     }
 
 } // end checkForDraw()
-
-
 
 
 //primary function that invokes above functions, manages gameplay
@@ -143,6 +148,9 @@ const placeMove = function(){
     const clickSpaceRow = clickSpace.attr('data-row');
     const clickSpaceColumn = clickSpace.attr('data-column');
     
+    console.log(clickSpace);
+    console.log("clickSpace.attr('data-row') = ",clickSpace.attr('data-row'));
+    console.log(clickSpaceRow,clickSpaceColumn);
 
     const spaceEmpty = checkSpaceIsEmpty(clickSpace);
     //checks the space clicked on is empty
@@ -154,11 +162,12 @@ const placeMove = function(){
         }else {
             placeO(clickSpace,clickSpaceRow,clickSpaceColumn);
         }
+        $('.messages').html("");
         //player turn changes at the end of the move
         manageTurn()
 
     }else{
-        console.log("space taken!")
+        $('.messages').html("*space taken!*");
     }
 
 
@@ -167,7 +176,10 @@ const placeMove = function(){
 
 } // placeMove()
 
+//createGameBoard();
 
 //when the user clicks on a div with the class of space, it runs placeMove()
 $('.space').on('click',placeMove);
 
+//creates game board of specified size when user sets size field
+$('.size-selector').on('change',createGameBoard);
