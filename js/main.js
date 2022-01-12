@@ -24,10 +24,14 @@ const createGameBoard = function(){
     for (let i = 0; i < gameSize; i++) {
         for (let j = 0; j <gameSize; j++){
             const $newSpace = $("<div></div>");
-            $newSpace.addClass(`space data-row="${i}" data-column="${j}"`);
+            $newSpace.addClass('space');
+            $newSpace.data('row',i);
+            $newSpace.data('column',j);
             $('.grid').append($newSpace);
         }
     }
+    $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
+    $('.space').on('click',placeMove);
 }
 
 
@@ -128,7 +132,8 @@ const checkForWinner = function(){
 const checkForDraw = function(){
 
     if (turn === 11){
-        console.log("it's a draw!");
+        $('.messages').html("*It's a draw!*");
+        $('.player-turn').html("");
     }
 
 } // end checkForDraw()
@@ -183,3 +188,6 @@ $('.space').on('click',placeMove);
 
 //creates game board of specified size when user sets size field
 $('.size-selector').on('change',createGameBoard);
+
+//resets gameboard when clicked
+$('.reset-button').on('click',createGameBoard);
