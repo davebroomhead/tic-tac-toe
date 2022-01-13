@@ -18,7 +18,7 @@ let gameBoardArray = [
     [0,0,0]
 ]
 
-
+//creates an array of arrays using game size variable
 const createGameBoardArray = function(size){
     gameBoardArray = [''];
     for (let i = 0; i < size; i++) {
@@ -29,22 +29,30 @@ const createGameBoardArray = function(size){
     }
 }
 
+//creates gameboalird array and grid of divs labelled with row and column numbers
 const createGameBoard = function(){
 
     turn = 2;
 
+    //displays message whose turn it is 
     $('.player-turn').html(`Cross's turn`);
     $('.messages').html("");
 
     //clears grid area by making html empty
     $('.grid').html("");
 
+    //gets value of size selector for game size variable
     gameSize = $('.size-selector').val();
 
+    //creates array for game size
     createGameBoardArray(gameSize);
 
+    //sets font size for X and O's based on grid size
     fontSizeVariable = Math.floor(228 * Math.pow(gameSize,-1.267));
 
+    //loop that generates divs and labels them with row and column numbers
+    //adds 'data' row and column information (arbitrary data) using i and j loops variables
+    //The .data() method allows us to attach data of any type to DOM elements in a way that is safe from circular references and therefore from memory leaks. -jQuery.com
     for (let i = 0; i < gameSize; i++) {
         for (let j = 0; j <gameSize; j++){
             const $newSpace = $("<div></div>");
@@ -53,14 +61,17 @@ const createGameBoard = function(){
             $newSpace.data('column',j);
             $('.grid').append($newSpace);
         }
-    // 
+    }
 
+    //sets css grid structure using game size variabe
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
 
+    //runs the place move function when a space (div) is clicked on 
     $('.space').on('click',placeMove);
-    }
-}
+
+} //end createGameBoard()
+
 
 //manages turn with integer - player one is odd and player two even numbers
 //updates page so user can see whose turn it is
@@ -103,43 +114,43 @@ const checkSpaceIsEmpty = function(space){
     return false;
 }
 
+
+//checks if the score is value of gameboard size, indicating winner
+//adds 1 to scoreboard for winning player
+const checkScore = function(score){
+
+    gameSize = parseInt(gameSize);
+
+    if (score === gameSize){
+        $('.messages').html("*Cross wins!*");
+        $('.player-turn').html("");
+        crossScore += 1;
+        $('.cross-score').html(`Cross: ${crossScore}`);
+        return true;
+
+    }else if(score === -gameSize){
+        $('.messages').html("*Nought wins!*");
+        $('.player-turn').html("");
+        circleScore += 1;
+        $('.nought-score').html(`Nought: ${circleScore}`);
+        return true;
+
+    }else if(turn === ((gameSize * gameSize) + 2)){
+        $('.messages').html("*It's a draw!*");
+        $('.player-turn').html("");
+        return true;
+    }
+
+    return false;
+
+}; //end of checkScore()
+
+
 //checks for winner by using score variable, array is updated with 1 for player 1 and -1 for player 2
-//player wins when row, column, or diagonal sum === 3 or -3
+//player wins when row, column, or diagonal sum === gameSize or -gameSize
 const checkForWinner = function(){
 
 let gameScore = 0;
-
-
-    //checks if the score is value of gameboard size, indicating winner
-    //adds 1 to scoreboard for winning player
-    const checkScore = function(score){
-
-        gameSize = parseInt(gameSize);
-
-        if (score === gameSize){
-            $('.messages').html("*Cross wins!*");
-            $('.player-turn').html("");
-            crossScore += 1;
-            $('.cross-score').html(`Cross: ${crossScore}`);
-            return true;
-
-        }else if(score === -gameSize){
-            $('.messages').html("*Nought wins!*");
-            $('.player-turn').html("");
-            circleScore += 1;
-            $('.nought-score').html(`Nought: ${circleScore}`);
-            return true;
-
-        }else if(turn === ((gameSize * gameSize) + 2)){
-            $('.messages').html("*It's a draw!*");
-            $('.player-turn').html("");
-            return true;
-        }
-
-        return false;
-
-    }; //end of checkScore()
-
 
     //loop that iterates through rows by iterating through arrays within gameBoard to check for winner
     for (let i = 0; i < gameBoardArray.length; i++){
