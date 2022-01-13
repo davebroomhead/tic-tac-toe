@@ -1,14 +1,17 @@
 console.log("Tic Tac Toe JS loaded");
 
 //global variables
-
-//turn is a global variable as it needs to be tracked from one play to the next
+//turn tracks whose turn it is - even is cross and odd is nought
 let turn = 2;
+//gameSize gets the size of the board, default to 3
 let gameSize = 3;
+//tracks score of cross player and nought player
 let crossScore = 0;
 let circleScore = 0;
-let fontSizeVariable = Math.floor(228 * Math.pow(gameSize,-1.267));
+//formula to make power relationship between gameboard size and font size
+let fontSizeVariable = 56;
 
+//default array to graphically represent gameboard in an array of arrays, allows scores to be added with function 
 let gameBoardArray = [
     [0,0,0],
     [0,0,0],
@@ -56,6 +59,7 @@ const createGameBoard = function(){
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
 
     $('.space').on('click',placeMove);
+    }
 }
 
 //manages turn with integer - player one is odd and player two even numbers
@@ -90,9 +94,13 @@ const placeO = function(space,row,column){
 
 //checks if space player clicks on is empty
 const checkSpaceIsEmpty = function(space){
-    if (space.is(':empty')){
+    
+    console.log("running spaceEmpty()")
+
+    if (space.children().length == 0){
         return true;
     }
+    return false;
 }
 
 //checks for winner by using score variable, array is updated with 1 for player 1 and -1 for player 2
@@ -106,16 +114,14 @@ let gameScore = 0;
     //adds 1 to scoreboard for winning player
     const checkScore = function(score){
 
-    console.log("score = ",score);
-
         gameSize = parseInt(gameSize);
+
         if (score === gameSize){
             $('.messages').html("*Cross wins!*");
             $('.player-turn').html("");
             crossScore += 1;
             $('.cross-score').html(`Cross: ${crossScore}`);
-            
-            return true; // need something here to end game ****
+            return true;
 
         }else if(score === -gameSize){
             $('.messages').html("*Nought wins!*");
@@ -141,7 +147,7 @@ let gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[i][j];
             if (checkScore(gameScore)){
-                return true
+                return true;
             };
         }
     }
@@ -154,7 +160,7 @@ let gameScore = 0;
             gameScore = gameScore + gameBoardArray[j][i];
             checkScore(gameScore);
             if (checkScore(gameScore)){
-                return true
+                return true;
             };
         }
     } 
@@ -165,7 +171,7 @@ let gameScore = 0;
         gameScore = gameScore + gameBoardArray[i][i];
         checkScore(gameScore);
         if (checkScore(gameScore)){
-            return true
+            return true;
         };
     }
 
@@ -176,7 +182,7 @@ let gameScore = 0;
         gameScore = gameScore + gameBoardArray[i][j];
         checkScore(gameScore);
         if (checkScore(gameScore)){
-            return true
+            return true;
         };
     }
 
@@ -186,38 +192,42 @@ let gameScore = 0;
 
 //primary function that invokes above functions, manages gameplay
 const placeMove = function(){
-    
-    const clickSpace = $(this);
-    //saves the jQuery element of the space clicked into variable 'clickSpace'
 
+    //saves the jQuery element of the space clicked into variable 'clickSpace'
+    const clickSpace = $(this);
+
+    //gets row and column numbers from clicked space and saves into variables
     const clickSpaceRow = clickSpace.data('row');
     const clickSpaceColumn = clickSpace.data('column');
 
-    const spaceEmpty = checkSpaceIsEmpty(clickSpace);
     //checks the space clicked on is empty
+    const spaceEmpty = checkSpaceIsEmpty(clickSpace);
 
     //conditional that allows move if space is empty, otherwise tells user the space is taken and prevents move
     if (spaceEmpty === true){
 
+        //equal turns are cross, odd turns nought
+        //feeds location data into placeX or placeO functions
         if(turn % 2 === 0){
             placeX(clickSpace,clickSpaceRow,clickSpaceColumn);
         }else {
             placeO(clickSpace,clickSpaceRow,clickSpaceColumn);
         }
+        //any error message cleared after turn
         $('.messages').html("");
+
         //player turn changes at the end of the move
         manageTurn()
 
+    //if space is not empty, paste error message
     }else {
         $('.messages').html("*space taken!*");
     }
 
-
+    //checks for winnner after each turn
     checkForWinner();
 
-} // placeMove()
-
-createGameBoard();
+} // end placeMove()
 
 
 //creates game board of specified size when user sets size field
@@ -225,3 +235,6 @@ $('.size-selector').on('change',createGameBoard);
 
 //resets gameboard when clicked
 $('.reset-button').on('click',createGameBoard);
+
+//creates gameboard when page loads
+createGameBoard();
