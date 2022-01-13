@@ -118,7 +118,7 @@ let gameScore = 0;
             return true; // need something here to end game ****
 
         }else if(score === -gameSize){
-            $('.messages').html("*Circle wins!*");
+            $('.messages').html("*Nought wins!*");
             $('.player-turn').html("");
             circleScore += 1;
             $('.nought-score').html(`Nought: ${circleScore}`);
