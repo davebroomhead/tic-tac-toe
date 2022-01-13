@@ -52,8 +52,6 @@ const createGameBoard = function(){
         }
     }
 
-    //$('.move').css('color','red); //not working????  need to actually change size
-
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
 
@@ -75,7 +73,7 @@ const manageTurn = function(){
 //places X in space passed into function from placeMove()
 const placeX = function(space,row,column){
     const $newX = $("<span></span>");
-    $newX.addClass("move").css({color:'red','font-size':fontSizeVariable + 'px'});
+    $newX.addClass("move").css('font-size',fontSizeVariable + 'px');
     $newX.html('X');
     space.html($newX);
     gameBoardArray[row][column] = 1;
@@ -84,7 +82,7 @@ const placeX = function(space,row,column){
 //places O in space passed into function from placeMove()
 const placeO = function(space,row,column){
     const $newO = $("<span></span>");
-    $newO.addClass("move").css({color:'red','font-size':fontSizeVariable + 'px'});;
+    $newO.addClass("move").css('font-size',fontSizeVariable + 'px');
     $newO.html('O');
     space.html($newO);
     gameBoardArray[row][column] = -1;
