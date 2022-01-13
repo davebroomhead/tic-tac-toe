@@ -31,7 +31,7 @@ h1{
     display:block;
     background-color:#5e47ed;
     width:800px;
-    height:600px;
+    height:700px;
     padding:30px;
     border:50px solid #a892fa;
     margin:auto;
@@ -88,4 +88,16 @@ h1{
 
 .size-label {
     display:inline;
+}
+
+.scoreboard {
+    display:flex;
+    justify-content: center;
+    flex:auto;
+    margin-top:10px;
+}
+
+.score {
+    display:inline-block;
+    padding: 20px 30px 20px 30px;
 }

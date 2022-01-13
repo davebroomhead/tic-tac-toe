@@ -5,6 +5,8 @@ console.log("Tic Tac Toe JS loaded");
 //turn is a global variable as it needs to be tracked from one play to the next
 let turn = 2;
 let gameSize = 3;
+let crossScore = 0;
+let circleScore = 0;
 
 let gameBoardArray = [
     [0,0,0],
@@ -12,18 +14,16 @@ let gameBoardArray = [
     [0,0,0]
 ]
 
-let gameBoardTestArray = [''];
 
 const createGameBoardArray = function(size){
-    gameBoardTestArray = [''];
+    gameBoardArray = [''];
     for (let i = 0; i < size; i++) {
-        gameBoardTestArray[i] = [''];
+        gameBoardArray[i] = [''];
         for (let j = 0; j < size; j++){
-        gameBoardTestArray[i][j] = 0;
+        gameBoardArray[i][j] = 0;
         }
     }
 }
-
 
 const createGameBoard = function(){
 
@@ -36,6 +36,8 @@ const createGameBoard = function(){
     $('.grid').html("");
 
     gameSize = $('.size-selector').val();
+
+    createGameBoardArray(gameSize);
 
     for (let i = 0; i < gameSize; i++) {
         for (let j = 0; j <gameSize; j++){
@@ -53,7 +55,6 @@ const createGameBoard = function(){
 
     $('.space').on('click',placeMove);
 }
-
 
 //manages turn with integer - player one is odd and player two even numbers
 //updates page so user can see whose turn it is
@@ -97,20 +98,22 @@ const checkSpaceIsEmpty = function(space){
 const checkForWinner = function(){
 
 let gameScore = 0;
-console.log("checkForWinner function, gameScore = ",gameScore);
 
-    //checks if the score is 3 or -3, indicating winner
+
+    //checks if the score is value of gameboard size, indicating winner
+    //adds 1 to scoreboard for winning player
     const checkScore = function(score){
         gameSize = parseInt(gameSize);
-        console.log("checkScore() function, score = ",score);
         if (score === gameSize){
-            console.log("cross win detected, score = ",score);
             $('.messages').html("*Cross wins!*");
             $('.player-turn').html("");
+            crossScore += 1;
+            $('.cross-score').html(`Cross: ${crossScore}`);
         }else if(score === -gameSize){
-            console.log("circle win detected, score = ",score);
             $('.messages').html("*Circle wins!*");
             $('.player-turn').html("");
+            circleScore += 1;
+            $('.nought-score').html(`Nought: ${circleScore}`);
         }
     }  
 
@@ -152,7 +155,6 @@ console.log("checkForWinner function, gameScore = ",gameScore);
 
 } //end checkForWinner()
 
-
 // checks for a draw by referencing turn counter
 const checkForDraw = function(){
 
@@ -162,7 +164,6 @@ const checkForDraw = function(){
     }
 
 } // end checkForDraw()
-
 
 //primary function that invokes above functions, manages gameplay
 const placeMove = function(){
