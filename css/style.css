@@ -44,19 +44,16 @@ h1{
     width:400px;
     height:400px;
     margin:auto;
+    
 }
 
 .space {
-    display:inline-block;
+    display:grid;
     margin:10px;
     width:100%;
     height:100%;
     background-color:#a892fa;
-}
-
-.space span {
-    align-self: center;
-    margin:auto;
+    place-items: center;
 }
 
 .move {

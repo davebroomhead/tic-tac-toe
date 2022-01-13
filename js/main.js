@@ -48,10 +48,11 @@ const createGameBoard = function(){
             $('.grid').append($newSpace);
         }
     }
+
+    $('.move').css('color','red'); //not working????  need to actually change size
+
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
-    
-    $('.move').css('color','red'); //not working????  need to actually change size
 
     $('.space').on('click',placeMove);
 }
@@ -167,8 +168,7 @@ const checkForDraw = function(){
 
 //primary function that invokes above functions, manages gameplay
 const placeMove = function(){
-
-
+    
     const clickSpace = $(this);
     //saves the jQuery element of the space clicked into variable 'clickSpace'
 
@@ -202,8 +202,6 @@ const placeMove = function(){
 
 createGameBoard();
 
-//when the user clicks on a div with the class of space, it runs placeMove()
-//$('.space').on('click',placeMove);
 
 //creates game board of specified size when user sets size field
 $('.size-selector').on('change',createGameBoard);
