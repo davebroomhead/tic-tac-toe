@@ -50,7 +50,7 @@ const createGameBoard = function(){
             $newSpace.data('column',j);
             $('.grid').append($newSpace);
         }
-    }
+    // 
 
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
@@ -153,7 +153,9 @@ let gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[j][i];
             checkScore(gameScore);
-            //if
+            if (checkScore(gameScore)){
+                return true
+            };
         }
     } 
     
@@ -162,6 +164,9 @@ let gameScore = 0;
     for (let i = 0; i < gameBoardArray.length; i++){
         gameScore = gameScore + gameBoardArray[i][i];
         checkScore(gameScore);
+        if (checkScore(gameScore)){
+            return true
+        };
     }
 
     //loop that checks diagonal top right to bottom left for winner
@@ -170,20 +175,14 @@ let gameScore = 0;
         let j = gameBoardArray.length - i - 1;
         gameScore = gameScore + gameBoardArray[i][j];
         checkScore(gameScore);
+        if (checkScore(gameScore)){
+            return true
+        };
     }
 
 
 } //end checkForWinner()
 
-// checks for a draw by referencing turn counter
-// const checkForDraw = function(){
-
-//     if (turn === ((gameSize * gameSize) + 2)){
-//         $('.messages').html("*It's a draw!*");
-//         $('.player-turn').html("");
-//     }
-
-// } // end checkForDraw()
 
 //primary function that invokes above functions, manages gameplay
 const placeMove = function(){
@@ -215,7 +214,6 @@ const placeMove = function(){
 
 
     checkForWinner();
-    // checkForDraw();
 
 } // placeMove()
 
