@@ -7,6 +7,7 @@ let turn = 2;
 let gameSize = 3;
 let crossScore = 0;
 let circleScore = 0;
+let fontSizeVariable = Math.floor(228 * Math.pow(gameSize,-1.267));
 
 let gameBoardArray = [
     [0,0,0],
@@ -39,6 +40,8 @@ const createGameBoard = function(){
 
     createGameBoardArray(gameSize);
 
+    fontSizeVariable = Math.floor(228 * Math.pow(gameSize,-1.267));
+
     for (let i = 0; i < gameSize; i++) {
         for (let j = 0; j <gameSize; j++){
             const $newSpace = $("<div></div>");
@@ -49,7 +52,7 @@ const createGameBoard = function(){
         }
     }
 
-    $('.move').css('color','red'); //not working????  need to actually change size
+    //$('.move').css('color','red); //not working????  need to actually change size
 
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
@@ -72,7 +75,7 @@ const manageTurn = function(){
 //places X in space passed into function from placeMove()
 const placeX = function(space,row,column){
     const $newX = $("<span></span>");
-    $newX.addClass("move");
+    $newX.addClass("move").css({color:'red','font-size':fontSizeVariable + 'px'});
     $newX.html('X');
     space.html($newX);
     gameBoardArray[row][column] = 1;
@@ -81,7 +84,7 @@ const placeX = function(space,row,column){
 //places O in space passed into function from placeMove()
 const placeO = function(space,row,column){
     const $newO = $("<span></span>");
-    $newO.addClass("move");
+    $newO.addClass("move").css({color:'red','font-size':fontSizeVariable + 'px'});;
     $newO.html('O');
     space.html($newO);
     gameBoardArray[row][column] = -1;
@@ -104,19 +107,34 @@ let gameScore = 0;
     //checks if the score is value of gameboard size, indicating winner
     //adds 1 to scoreboard for winning player
     const checkScore = function(score){
+
+    console.log("score = ",score);
+
         gameSize = parseInt(gameSize);
         if (score === gameSize){
             $('.messages').html("*Cross wins!*");
             $('.player-turn').html("");
             crossScore += 1;
             $('.cross-score').html(`Cross: ${crossScore}`);
+            
+            return true; // need something here to end game ****
+
         }else if(score === -gameSize){
             $('.messages').html("*Circle wins!*");
             $('.player-turn').html("");
             circleScore += 1;
             $('.nought-score').html(`Nought: ${circleScore}`);
+            return true;
+
+        }else if(turn === ((gameSize * gameSize) + 2)){
+            $('.messages').html("*It's a draw!*");
+            $('.player-turn').html("");
+            return true;
         }
-    }  
+
+        return false;
+
+    }; //end of checkScore()
 
 
     //loop that iterates through rows by iterating through arrays within gameBoard to check for winner
@@ -124,7 +142,9 @@ let gameScore = 0;
         gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[i][j];
-            checkScore(gameScore);
+            if (checkScore(gameScore)){
+                return true
+            };
         }
     }
 
@@ -135,6 +155,7 @@ let gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[j][i];
             checkScore(gameScore);
+            //if
         }
     } 
     
@@ -157,14 +178,14 @@ let gameScore = 0;
 } //end checkForWinner()
 
 // checks for a draw by referencing turn counter
-const checkForDraw = function(){
+// const checkForDraw = function(){
 
-    if (turn === ((gameSize * gameSize) + 2)){
-        $('.messages').html("*It's a draw!*");
-        $('.player-turn').html("");
-    }
+//     if (turn === ((gameSize * gameSize) + 2)){
+//         $('.messages').html("*It's a draw!*");
+//         $('.player-turn').html("");
+//     }
 
-} // end checkForDraw()
+// } // end checkForDraw()
 
 //primary function that invokes above functions, manages gameplay
 const placeMove = function(){
@@ -196,7 +217,7 @@ const placeMove = function(){
 
 
     checkForWinner();
-    checkForDraw();
+    // checkForDraw();
 
 } // placeMove()
 
