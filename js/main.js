@@ -61,13 +61,13 @@ const createGameBoard = function(){
             $newSpace.data('column',j);
             $('.grid').append($newSpace);
         }
-    }
+    } //spent 3 hours to work out this curcly bracket was in the wrong spot  :/
 
     //sets css grid structure using game size variabe
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
     $('.grid').css('grid-template-rows',`repeat(${gameSize}, 1fr)`);
 
-    //runs the place move function when a space (div) is clicked on 
+    //runs the place move function when a space (div) is clicked on - propagation not a problem?
     $('.space').on('click',placeMove);
 
 } //end createGameBoard()
