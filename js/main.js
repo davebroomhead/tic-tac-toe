@@ -177,7 +177,7 @@ let gameScore = 0;
         gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[j][i];
-            checkScore(gameScore);
+            checkScore(gameScore);              //necessary??
             if (checkScore(gameScore)){
                 return true;
             };
