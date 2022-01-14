@@ -61,7 +61,7 @@ const createGameBoard = function(){
             $newSpace.data('column',j);
             $('.grid').append($newSpace);
         }
-    } //spent 3 hours to work out this curcly bracket was in the wrong spot  :/
+    } //spent 3 hours to work out this curly bracket was in the wrong spot  :/
 
     //sets css grid structure using game size variabe
     $('.grid').css('grid-template-columns',`repeat(${gameSize}, 1fr)`);
@@ -114,16 +114,18 @@ const checkSpaceIsEmpty = function(space){
     return false;
 }
 
-
 //checks if the score is value of gameboard size, indicating winner
 //adds 1 to scoreboard for winning player
 const checkScore = function(score){
 
     gameSize = parseInt(gameSize);
 
+    console.log("running checkScore()");
+
     if (score === gameSize){
         $('.messages').html("*Cross wins!*");
         $('.player-turn').html("");
+        console.log("adding score");
         crossScore += 1;
         $('.cross-score').html(`Cross: ${crossScore}`);
         return true;
@@ -154,6 +156,9 @@ let gameScore = 0;
 
     //loop that iterates through rows by iterating through arrays within gameBoard to check for winner
     for (let i = 0; i < gameBoardArray.length; i++){
+        if (checkScore(gameScore)){
+            return true;
+        }
         gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[i][j];
@@ -166,6 +171,9 @@ let gameScore = 0;
 
     //loop that iterates through columns by iterating through arrays within gameBoard to check for winner
     for (let i = 0; i < gameBoardArray.length; i++){
+        if (checkScore(gameScore)){
+            return true;
+        }
         gameScore = 0;
         for(let j = 0; j < gameBoardArray[i].length; j++){
             gameScore = gameScore + gameBoardArray[j][i];
@@ -179,25 +187,23 @@ let gameScore = 0;
     gameScore = 0;
     //loop that checks diagonal top left to bottom right for winner
     for (let i = 0; i < gameBoardArray.length; i++){
-        gameScore = gameScore + gameBoardArray[i][i];
-        checkScore(gameScore);
         if (checkScore(gameScore)){
             return true;
-        };
+        }
+        gameScore = gameScore + gameBoardArray[i][i];
+        checkScore(gameScore);
     }
 
     //loop that checks diagonal top right to bottom left for winner
     gameScore = 0;
     for (let i = 0; i < gameBoardArray.length; i++){
+        if (checkScore(gameScore)){
+            return true;
+        }
         let j = gameBoardArray.length - i - 1;
         gameScore = gameScore + gameBoardArray[i][j];
         checkScore(gameScore);
-        if (checkScore(gameScore)){
-            return true;
-        };
     }
-
-
 } //end checkForWinner()
 
 
@@ -230,14 +236,13 @@ const placeMove = function(){
         //player turn changes at the end of the move
         manageTurn()
 
+        //checks for winnner after each turn
+        checkForWinner();
+
     //if space is not empty, paste error message
     }else {
         $('.messages').html("*space taken!*");
     }
-
-    //checks for winnner after each turn
-    checkForWinner();
-
 } // end placeMove()
 
 
